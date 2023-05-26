@@ -3,7 +3,7 @@ FROM python:3.9.7-alpine
 
 
 # Instala pip y las bibliotecas de Flask 
-RUN pip install --no-cache-dir flask 
+RUN pip install --no-cache-dir flask requests
 
 # Copia el archivo tienda.py al directorio /srv
 COPY tienda.py /srv/tienda.py
