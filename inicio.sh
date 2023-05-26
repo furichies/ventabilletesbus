@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#Creación de imágenes
+docker build -t bus:0.1 bus/
+docker build -t tienda:0.1 tienda/
+docker build -t registro:0.1 registro/
+docker build -t cajero:0.1 cajero/
+
+#Creación de conenedores
+docker run --name bus01 -p 7000:7000 -d bus:0.1
+docker run --name registro01 -p 6900:6900 -d registro:0.1
+docker run --name cajero01 -p 6901:6901 -d cajero:0.1
+docker run --name tienda01 -p 8888:8888 -d tienda:0.1
