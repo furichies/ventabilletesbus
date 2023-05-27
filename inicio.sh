@@ -18,12 +18,13 @@ elif [ $1 = 0 ]; then
 
 docker stop bus01 tienda01 registro01 cajero01
 docker rm bus01 tienda01 registro01 cajero01
-docker rmi bus tienda registro cajero
+docker rmi bus tienda:0.1 registro:0.1 cajero:0.1
 
 fi
 
 } || {
 
 echo ERROR
+echo "uso $0: argumentos [1] crear imágenes y contenedores [2] detiene y elimina conetnedores y borra las imágenes"
 
 }
