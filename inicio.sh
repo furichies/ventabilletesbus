@@ -18,7 +18,7 @@ elif [ $1 = 0 ]; then
 
 docker stop bus01 tienda01 registro01 cajero01
 docker rm bus01 tienda01 registro01 cajero01
-docker rmi bus tienda:0.1 registro:0.1 cajero:0.1
+docker rmi bus:0.1 tienda:0.1 registro:0.1 cajero:0.1
 
 fi
 
