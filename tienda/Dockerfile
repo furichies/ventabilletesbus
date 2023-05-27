@@ -6,7 +6,7 @@ FROM python:3.9.7-alpine
 RUN pip install --no-cache-dir flask requests
 
 # Copia el archivo tienda.py al directorio /srv
-COPY tienda.py /srv/tienda.py
+COPY tienda.py.docker /srv/tienda.py
 
 # Expone el puerto 8888
 EXPOSE 8888
