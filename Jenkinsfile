@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clonar Repositorio') {
             steps {
-                git branch: 'quality', credentialsId: 'github-credentials', url: 'https://github.com/richifor/ventabus.git'
+                git branch: 'quality', credentialsId: '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', url: 'https://github.com/richifor/ventabus.git'
             }
         }
         
