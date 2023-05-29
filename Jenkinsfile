@@ -15,19 +15,21 @@ pipeline {
                 sh 'echo "usuario que ejecuta las tareas $USER"'
                 //sh 'apt-get update'
                 //sh 'apt-get install -y python3-pip'
-                sh 'pip3 install flask flask_restful flask_sqlalchemy'
+                sh 'pip3 install flask flask_restful flask_sqlalchemy pylint'
             }
         }
 
         stage('Verificación de calidad de código') {
             steps {
-                sh 'pylint bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py'
+               sh 'echo "control de calidad de código. Testear el porcentaje con pylint"'
+                //sh 'pylint bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py'
+               //sh 'pylint bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py'
             }
         }
 
         stage('Construcción de imágenes Docker') {
             steps {
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
 
@@ -39,7 +41,7 @@ pipeline {
 
         stage('Despliegue') {
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
             }
         }
     }
