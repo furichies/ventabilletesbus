@@ -13,8 +13,8 @@ pipeline {
         stage('Preparación') {
             steps {
                 sh 'echo "usuario que ejecuta las tareas $USER'
-                #sh 'apt-get update'
-                #sh 'apt-get install -y python3-pip'
+                //sh 'apt-get update'
+                //sh 'apt-get install -y python3-pip'
                 sh 'pip3 install flask flask_restful flask_sqlalchemy'
             }
         }
