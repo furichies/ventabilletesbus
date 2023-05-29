@@ -2,9 +2,9 @@ import requests
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-REGISTRO_API_URL = 'http://localhost:6900/verificar'
-PLAZAS_API_URL = 'http://localhost:7000/asientos'
-PAGAR_API_URL = 'http://localhost:6901/pagar'
+REGISTRO_API_URL = 'http://registro:6900/verificar'
+PLAZAS_API_URL = 'http://bus:7000/asientos'
+PAGAR_API_URL = 'http://cajero:6901/pagar'
 
 
 @app.route('/comprar', methods=['POST'])
@@ -28,7 +28,7 @@ def comprar_billete():
         return jsonify({'mensaje': 'No hay plazas libres disponibles.'}), 400
 
     # Verificar si el usuario tiene saldo suficiente
-    response_saldo = requests.get(f'http://localhost:6901/saldo?nombre={nombre}')
+    response_saldo = requests.get(f'http://cajero:6901/saldo?nombre={nombre}')
     if response_saldo.status_code != 200 or response_saldo.json().get('saldo', 0) < valor_billete:
         return jsonify({'mensaje': 'Saldo insuficiente para comprar el billete.'}), 400
 
@@ -39,7 +39,7 @@ def comprar_billete():
 
     # Ocupar un asiento
     asiento_a_ocupar = plazas_libres[0]
-    response_ocupar = requests.put(f'http://localhost:7000/asientos/ocupar', json={'numero': asiento_a_ocupar, 'cliente': nombre})
+    response_ocupar = requests.put(f'http://bus:7000/asientos/ocupar', json={'numero': asiento_a_ocupar, 'cliente': nombre})
     if response_ocupar.status_code != 200 or not response_ocupar.json().get('message') == 'Asiento ocupado exitosamente':
         return jsonify({'mensaje': 'Error al ocupar el asiento.'}), 500
 
