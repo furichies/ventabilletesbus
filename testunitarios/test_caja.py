@@ -1,6 +1,6 @@
 import unittest
 import requests
-from  caja import app, db, Usuario
+from  cajero.caja import app, db, Usuario
 
 
 class AppTestCase(unittest.TestCase):
