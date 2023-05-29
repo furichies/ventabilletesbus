@@ -35,7 +35,8 @@ pipeline {
 
         stage('Pruebas unitarias') {
             steps {
-                sh 'python3 -m unittest discover -s testunitarios'
+                sh 'python3 -m unittest testunitarios.test_srv_bus'
+                sh 'python3 -m unittest testunitarios.test_registro'
             }
         }
 
