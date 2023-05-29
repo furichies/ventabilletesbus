@@ -1,83 +1,44 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Clonar Repositorio') {
+        stage('Clonar repositorio') {
             steps {
-                git branch: 'quality', credentialsId: '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', url: 'https://github.com/richifor/ventabus.git'
+                git branch: 'quality',
+                    credentialsId: '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',
+                    url: 'https://github.com/richifor/ventabus.git'
             }
         }
-        
-        stage('Construir y Probar Aplicación Bus') {
+
+        stage('Preparación') {
             steps {
-                dir('bus') {
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
-                    sh 'docker-compose exec app python -m unittest discover testunitarios'
-                    sh 'docker-compose down'
-                }
+                sh 'apt-get update'
+                sh 'apt-get install -y python3-pip'
+                sh 'pip3 install flask flask_restful flask_sqlalchemy'
             }
         }
-        
-        stage('Construir y Probar Aplicación Registro') {
+
+        stage('Verificación de calidad de código') {
             steps {
-                dir('registro') {
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
-                    sh 'docker-compose exec app python -m unittest discover testunitarios'
-                    sh 'docker-compose down'
-                }
+                sh 'pylint bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py'
             }
         }
-        
-        stage('Construir y Probar Aplicación Caja') {
+
+        stage('Construcción de imágenes Docker') {
             steps {
-                dir('cajero') {
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
-                    sh 'docker-compose exec app python -m unittest discover testunitarios'
-                    sh 'docker-compose down'
-                }
+                sh 'docker-compose build'
             }
         }
-        
-        stage('Construir y Probar Aplicación Tienda') {
+
+        stage('Pruebas unitarias') {
             steps {
-                dir('tienda') {
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
-                    sh 'docker-compose exec app python -m unittest discover testunitarios'
-                    sh 'docker-compose down'
-                }
+                sh 'python3 -m unittest discover -s testunitarios'
             }
         }
-        
-        stage('Ejecutar pylint') {
+
+        stage('Despliegue') {
             steps {
-                sh 'pylint bus/srv_bus.py'
-                sh 'pylint registro/registro.py'
-                sh 'pylint cajero/caja.py'
-                sh 'pylint tienda/tienda.py'
-            }
-        }
-        
-        stage('Construir Imágenes Docker') {
-            steps {
-                dir('bus') {
-                    sh 'docker build -t bus-app .'
-                }
-                
-                dir('registro') {
-                    sh 'docker build -t registro-app .'
-                }
-                
-                dir('cajero') {
-                    sh 'docker build -t caja-app .'
-                }
-                
-                dir('tienda') {
-                    sh 'docker build -t tienda-app .'
-                }
+                sh 'docker-compose up -d'
             }
         }
     }
