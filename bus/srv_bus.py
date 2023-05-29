@@ -1,3 +1,8 @@
+"""
+Este es un breve ejemplo de una aplicación Flask que utiliza SQLAlchemy para interactuar con una base de datos SQLite.
+Proporciona endpoints para obtener el estado de los asientos, ocupar y desocupar asientos, y obtener los asientos libres y ocupados.
+"""
+
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
@@ -27,7 +32,9 @@ class Asiento(db.Model):
 
 
 def crear_asientos_iniciales():
-    """Crea los asientos iniciales en la base de datos"""
+    """
+    Crea los asientos iniciales en la base de datos.
+    """
     for numero_asiento in range(1, 45):
         if Asiento.query.filter_by(numero=numero_asiento).first() is None:
             asiento = Asiento(numero_asiento)
@@ -37,7 +44,11 @@ def crear_asientos_iniciales():
 
 class EstadoAsientos(Resource):
     def get(self):
-        """Obtiene el estado de todos los asientos"""
+        """
+        Obtiene el estado de todos los asientos.
+
+        :return: Estado de los asientos en formato JSON.
+        """
         asientos = Asiento.query.all()
         estado = {asiento.numero: {'estado': asiento.estado, 'ocupante': asiento.ocupante} for asiento in asientos}
         return jsonify(estado)
@@ -45,7 +56,11 @@ class EstadoAsientos(Resource):
 
 class OcuparAsiento(Resource):
     def put(self):
-        """Ocupa un asiento con un cliente específico"""
+        """
+        Ocupa un asiento con un cliente específico.
+
+        :return: Mensaje de éxito o error en formato JSON.
+        """
         numero = request.json.get('numero')
         cliente = request.json.get('cliente')
 
@@ -70,7 +85,11 @@ class OcuparAsiento(Resource):
 
 class DesocuparAsiento(Resource):
     def put(self):
-        """Desocupa un asiento"""
+        """
+        Desocupa un asiento.
+
+        :return: Mensaje de éxito o error en formato JSON.
+        """
         numero = request.json.get('numero')
 
         if not numero:
@@ -94,7 +113,11 @@ class DesocuparAsiento(Resource):
 
 class AsientosLibres(Resource):
     def get(self):
-        """Obtiene los números de los asientos libres"""
+        """
+        Obtiene los números de los asientos libres.
+
+        :return: Números de los asientos libres en formato JSON.
+        """
         asientos_libres = Asiento.query.filter_by(estado='libre').all()
         numeros_libres = [asiento.numero for asiento in asientos_libres]
         return jsonify({'asientos_libres': numeros_libres})
@@ -102,7 +125,11 @@ class AsientosLibres(Resource):
 
 class AsientosOcupados(Resource):
     def get(self):
-        """Obtiene los números de los asientos ocupados"""
+        """
+        Obtiene los números de los asientos ocupados.
+
+        :return: Números de los asientos ocupados en formato JSON.
+        """
         asientos_ocupados = Asiento.query.filter_by(estado='ocupado').all()
         numeros_ocupados = [asiento.numero for asiento in asientos_ocupados]
         return jsonify({'asientos_ocupados': numeros_ocupados})
