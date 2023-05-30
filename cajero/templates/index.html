@@ -35,7 +35,7 @@
   </form>
 
   <script>
-    var socket = io.connect('http://localhost:5000');
+    var socket = io.connect('http://192.168.119.140:6543');
 
     // Manejar el evento de respuesta del registro
     socket.on('registro_usuario_respuesta', function(data) {
