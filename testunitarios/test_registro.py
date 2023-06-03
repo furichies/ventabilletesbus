@@ -1,7 +1,7 @@
 import unittest
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import registro
+from registro import registro
 
 class RegistroTestCase(unittest.TestCase):
     def setUp(self):
