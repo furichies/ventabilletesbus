@@ -1,3 +1,6 @@
+'''
+	compra de billetes
+'''
 import requests
 from flask import Flask, jsonify, request
 
@@ -41,7 +44,7 @@ def comprar_billete():
 
     # Ocupar un asiento
     asiento_a_ocupar = plazas_libres[0]
-    response_ocupar = requests.put(f'http://bus:7000/asientos/ocupar', json={'numero': asiento_a_ocupar, 'cliente': nombre}, timeout=5)
+    response_ocupar = requests.put('http://bus:7000/asientos/ocupar', json={'numero': asiento_a_ocupar, 'cliente': nombre}, timeout=5)
     if response_ocupar.status_code != 200 or not response_ocupar.json().get('message') == 'Asiento ocupado exitosamente':
         return jsonify({'mensaje': 'Error al ocupar el asiento.'}), 500
 

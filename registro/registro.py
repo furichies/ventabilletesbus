@@ -1,3 +1,6 @@
+'''
+	Registro de usuarios en la app de CBA
+'''
 import random
 import string
 from flask import Flask, jsonify, request

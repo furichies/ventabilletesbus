@@ -84,11 +84,12 @@ class OcuparAsiento(Resource):
 
 
 class DesocuparAsiento(Resource):
+
     def put(self):
         """
-        Desocupa un asiento.
+        	Desocupa un asiento.
 
-        :return: Mensaje de éxito o error en formato JSON.
+        	:return: Mensaje de éxito o error en formato JSON.
         """
         numero = request.json.get('numero')
 
