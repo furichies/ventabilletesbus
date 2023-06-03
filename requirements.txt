@@ -1,0 +1,7 @@
+responses
+unittest
+flask
+flask_restful
+flask_sqlalchemy
+pylint
+flask_cors

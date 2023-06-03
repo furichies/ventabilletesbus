@@ -1,0 +1,32 @@
+version: '3'
+services:
+  bus:
+    build: ./bus
+    ports:
+      - 7000:7000
+    volumes:
+      - ./bus:/app
+  cajero:
+    build: ./cajero
+    ports:
+      - 6901:6901
+    volumes:
+      - ./cajero:/app
+  tienda:
+    build: ./tienda
+    ports:
+      - 8888:8888
+    volumes:
+      - ./tienda:/app
+  registro:
+    build: ./registro
+    ports:
+      - 6900:6900
+    volumes:
+      - ./registro:/app
+  web:
+    image: php:7.4-apache
+    ports:
+      - 80:80
+    volumes:
+      - ./web:/var/www/html

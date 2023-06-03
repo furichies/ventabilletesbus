@@ -1,0 +1,34 @@
+version: '3'
+services:
+  tienda:
+    build:
+      context: ./tienda
+    ports:
+      - 8888:8888
+    depends_on:
+      - registro
+      - cajero
+      - bus
+
+  registro:
+    build:
+      context: ./registro
+    volumes:
+      - registro_data:/app/data
+
+  cajero:
+    build:
+      context: ./cajero
+    volumes:
+      - cajero_data:/app/data
+
+  bus:
+    build:
+      context: ./bus
+    volumes:
+      - bus_data:/app/data
+
+volumes:
+  registro_data:
+  cajero_data:
+  bus_data:
