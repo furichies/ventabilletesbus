@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de Registro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>Formulario de Registro</h1>
+  <form id="registro-form">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+    <label for="apellidos">Apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" required><br><br>
+    <input type="submit" value="Registrarse">
+  </form>
+
+  <h1>Consulta de Saldo</h1>
+  <form id="consulta-form">
+    <label for="nombre-consulta">Nombre:</label>
+    <input type="text" id="nombre-consulta" name="nombre" required><br><br>
+    <label for="apellidos-consulta">Apellidos:</label>
+    <input type="text" id="apellidos-consulta" name="apellidos" required><br><br>
+    <input type="submit" value="Consultar Saldo">
+  </form>
+
+  <h1>Ingreso de Saldo</h1>
+  <form id="ingreso-form">
+    <label for="nombre-ingreso">Nombre:</label>
+    <input type="text" id="nombre-ingreso" name="nombre" required><br><br>
+    <label for="apellidos-ingreso">Apellidos:</label>
+    <input type="text" id="apellidos-ingreso" name="apellidos" required><br><br>
+    <label for="ingreso">Ingreso:</label>
+    <input type="number" id="ingreso" name="ingreso" required><br><br>
+    <input type="submit" value="Agregar Saldo">
+  </form>
+
+  <script>
+    var socket = io.connect('http://192.168.119.140:6543');
+
+    // Manejar el evento de respuesta del registro
+    socket.on('registro_usuario_respuesta', function(data) {
+      alert('Mensaje: ' + data.mensaje + ', Saldo: ' + data.saldo);
+    });
+
+    // Manejar el evento de respuesta de la consulta de saldo
+    socket.on('consulta_saldo_respuesta', function(data) {
+      if (data.mensaje) {
+        alert('Mensaje: ' + data.mensaje);
+      } else {
+        alert('Saldo: ' + data.saldo);
+      }
+    });
+
+    // Manejar el evento de respuesta del ingreso de saldo
+    socket.on('agregar_saldo_respuesta', function(data) {
+      alert('Mensaje: ' + data.mensaje + ', Saldo: ' + data.saldo);
+    });
+
+    // Manejar el envío del formulario de registro
+    document.getElementById('registro-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      // Obtener los valores del formulario
+      var nombre = document.getElementById('nombre').value;
+      var apellidos = document.getElementById('apellidos').value;
+
+      // Enviar los datos al servidor
+      socket.emit('registro_usuario', {nombre: nombre, apellidos: apellidos});
+    });
+
+    // Manejar el envío del formulario de consulta de saldo
+    document.getElementById('consulta-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      // Obtener los valores del formulario
+      var nombre = document.getElementById('nombre-consulta').value;
+      var apellidos = document.getElementById('apellidos-consulta').value;
+
+      // Enviar los datos al servidor
+      socket.emit('consulta_saldo', {nombre: nombre, apellidos: apellidos});
+    });
+
+    // Manejar el envío del formulario de ingreso de saldo
+    document.getElementById('ingreso-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      // Obtener los valores del formulario
+      var nombre = document.getElementById('nombre-ingreso').value;
+      var apellidos = document.getElementById('apellidos-ingreso').value;
+      var ingreso = document.getElementById('ingreso').value;
+
+      // Enviar los datos al servidor
+      socket.emit('agregar_saldo', {nombre: nombre, apellidos: apellidos, ingreso: ingreso});
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- 
+
+ESTE FUNCIONA
+ -->
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de Registro</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>Formulario de Registro</h1>
+  <form id="registro-form">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+    <label for="apellidos">Apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" required><br><br>
+    <input type="submit" value="Registrarse">
+  </form>
+
+  <script>
+    var socket = io.connect('http://192.168.126.129:5000');
+
+    // Manejar el evento de respuesta del registro
+    socket.on('registro_usuario_respuesta', function(data) {
+      alert('Mensaje: ' + data.mensaje + ', Saldo: ' + data.saldo);
+    });
+
+    // Manejar el envío del formulario
+    document.getElementById('registro-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      // Obtener los valores del formulario
+      var nombre = document.getElementById('nombre').value;
+      var apellidos = document.getElementById('apellidos').value;
+
+      // Enviar los datos al servidor
+      socket.emit('registro_usuario', {nombre: nombre, apellidos: apellidos});
+    });
+  </script>
+</body>
+</html> -->
+
+
+<!--     
+
+
+
+
+-->
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicación de Registro</title>
+</head>
+<body>
+    <h1>Aplicación de Registro</h1>
+
+    <div id="mensaje"></div>
+
+    <h2>Registro de usuario</h2>
+    <form id="registroForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required><br><br>
+        <input type="submit" value="Registrar">
+    </form>
+
+    <h2>Consultar saldo</h2>
+    <form id="saldoForm">
+        <label for="nombreConsulta">Nombre:</label>
+        <input type="text" id="nombreConsulta" name="nombreConsulta" required><br><br>
+        <label for="apellidosConsulta">Apellidos:</label>
+        <input type="text" id="apellidosConsulta" name="apellidosConsulta" required><br><br>
+        <input type="submit" value="Consultar">
+    </form>
+
+    <h2>Agregar saldo</h2>
+    <form id="agregarSaldoForm">
+        <label for="nombreAgregar">Nombre:</label>
+        <input type="text" id="nombreAgregar" name="nombreAgregar" required><br><br>
+        <label for="apellidosAgregar">Apellidos:</label>
+        <input type="text" id="apellidosAgregar" name="apellidosAgregar" required><br><br>
+        <label for="ingreso">Ingreso:</label>
+        <input type="number" id="ingreso" name="ingreso" step="0.01" required><br><br>
+        <input type="submit" value="Agregar">
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        // Event handler for chat_history event
+        socket.on('chat_history', function(messages) {
+            // Display chat history
+            for (var i = 0; i < messages.length; i++) {
+                displayMessage(messages[i]);
+            }
+        });
+
+        // Event handler for message event
+        socket.on('message', function(message) {
+            // Display received message
+            displayMessage(message);
+        });
+
+        // Submit handler for registroForm
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var nombre = document.getElementById('nombre').value;
+            var apellidos = document.getElementById('apellidos').value;
+
+            var data = JSON.stringify({
+                nombre: nombre,
+                apellidos: apellidos
+            });
+
+            // Send registro event to the server
+            socket.emit('registro', data);
+
+            document.getElementById('nombre').value = '';
+            document.getElementById('apellidos').value = '';
+        });
+
+        // Submit handler for saldoForm
+        document.getElementById('saldoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var nombreConsulta = document.getElementById('nombreConsulta').value;
+            var apellidosConsulta = document.getElementById('apellidosConsulta').value;
+
+            var data = JSON.stringify({
+                nombre: nombreConsulta,
+                apellidos: apellidosConsulta
+            });
+
+            // Send saldo event to the server
+            socket.emit('saldo', data);
+
+            document.getElementById('nombreConsulta').value = '';
+            document.getElementById('apellidosConsulta').value = '';
+        });
+
+        // Submit handler for agregarSaldoForm
+        document.getElementById('agregarSaldoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var nombreAgregar = document.getElementById('nombreAgregar').value;
+            var apellidosAgregar = document.getElementById('apellidosAgregar').value;
+            var ingreso = document.getElementById('ingreso').value;
+
+            var data = JSON.stringify({
+                nombre: nombreAgregar,
+                apellidos: apellidosAgregar,
+                ingreso: ingreso
+            });
+
+            // Send agregar_saldo event to the server
+            socket.emit('agregar_saldo', data);
+
+            document.getElementById('nombreAgregar').value = '';
+            document.getElementById('apellidosAgregar').value = '';
+            document.getElementById('ingreso').value = '';
+        });
+
+        // Function to display a message in the UI
+        function displayMessage(message) {
+            var mensajeDiv = document.getElementById('mensaje');
+            var nombre = message.name || 'Anónimo';
+            var contenido = nombre + ': ' + message.message;
+
+            var p = document.createElement('p');
+            p.textContent = contenido;
+
+            mensajeDiv.appendChild(p);
+        }
+        
+        function registro_usuario() {
+            var nombre = document.getElementById("nombre").value;
+            var apellidos = document.getElementById("apellidos").value;
+
+            // Emitir el evento 'registro_usuario' al servidor con los datos del usuario
+            socket.emit("registro_usuario", { nombre: nombre, apellidos: apellidos });
+        }
+        socket.on("registro_usuario_respuesta", function (data) {
+            var mensaje = data.mensaje;
+            var saldo = data.saldo;
+
+            // Mostrar el mensaje y saldo en la interfaz
+            document.getElementById("mensaje").textContent = mensaje;
+            document.getElementById("saldo").textContent = saldo;
+        });
+
+    </script>
+</body>
+</html> -->
