@@ -24,8 +24,8 @@ pipeline {
                 sh 'pylint --rcfile=.pylintrc bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py | tee pylint_report.txt'
                 script {
                     def pylintReport = readFile('pylint_report.txt')
-                    def match = pylintReport =~ /Your code has been rated at ([-+]?[0-9]*\.?[0-9]+)%/
-                    def pylintScore = match[0][1].toDouble()
+                    def match = pylintReport =~ /Your code has been rated at ([-+]?[0-9]*\.?[0-9]+)\/10/
+                    def pylintScore = match[0][1].toDouble() * 10
                     echo "Puntuación de pylint: ${pylintScore}%"
                     if (pylintScore < 70) {
                         echo "La puntuación de pylint es inferior al 70%. Enviando notificación al desarrollador."
