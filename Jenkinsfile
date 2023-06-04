@@ -21,6 +21,8 @@ pipeline {
         stage('Verificación de calidad de código') {
             steps {
                 sh 'echo "Control de calidad de código. Evaluando el porcentaje con pylint"'
+                sh 'python3 -m pylint --generate-rcfile > .pylintrc'
+
                 sh 'python3 -m pylint --rcfile=.pylintrc bus/srv_bus.py registro/registro.py cajero/caja.py tienda/tienda.py | tee pylint_report.txt'
                 script {
                     def pylintReport = readFile('pylint_report.txt')
@@ -44,16 +46,16 @@ pipeline {
         
         stage('Ejecutar pruebas unitarias') {
             steps {
-                sh 'python3 -m unittest testunitarios.test_srv_bus'
-                sh 'python3 -m unittest testunitarios.test_registro'
-                sh 'python3 -m unittest testunitarios.test_caja'
-                sh 'python3 -m unittest testunitarios.test_tienda'
+                sh 'python -m unittest testunitarios.test_srv_bus'
+                sh 'python -m unittest testunitarios.test_registro'
+                sh 'python -m unittest testunitarios.test_caja'
+                sh 'python -m unittest testunitarios.test_tienda'
             }
         }
         
         stage('Pruebas de integración') {
             steps {
-                sh 'python3 -m unittest testunitarios.test_integracion'
+                sh 'python -m unittest testunitarios.test_integracion'
             }
         }
         
