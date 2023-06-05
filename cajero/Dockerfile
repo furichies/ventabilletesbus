@@ -5,7 +5,7 @@ FROM python:3.9.7-alpine
 #RUN apk add --no-cache gcc musl-dev postgresql-dev
 
 # Instala pip y las bibliotecas de Flask y SQLAlchemy
-RUN pip install --no-cache-dir flask flask_sqlalchemy
+RUN pip install --no-cache-dir flask flask_sqlalchemy flask_cors
 
 # Copia el archivo srv_bus.py al directorio /srv
 COPY caja.py /srv/caja.py

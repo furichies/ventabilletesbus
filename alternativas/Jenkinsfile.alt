@@ -18,6 +18,11 @@ pipeline {
         }
         
         stage('Instalar dependencias') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
                 sh 'python3 -m pip install -r requirements.txt'
             }
@@ -41,7 +46,7 @@ pipeline {
                     echo "Puntuación de pylint: ${pylintScore}%"
                     if (pylintScore < 70) {
                         echo "La puntuación de pylint es inferior al 70%. Enviando notificación al desarrollador."
-                        // Agrega el código para enviar la notificación al desarrollador aquí
+                        // Analizar método de notificación para que no falle ... falta el smtp para el mail.. hay que pensarlo. 
                         error('Pylint score es inferior al 70%')
                     }
                 }
