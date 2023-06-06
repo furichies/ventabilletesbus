@@ -3,6 +3,11 @@ pipeline {
     
     stages {
         stage('Clonar repositorio') {
+              agent { 
+            node{
+              label "slave1"; 
+              }
+          }      
             steps {
                 script {
                     git credentialsId: 'github-token',
@@ -13,12 +18,22 @@ pipeline {
         }
         
         stage('Instalar dependencias') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
         
         stage('Verificación de calidad de código') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
                 sh 'echo "Control de calidad de código. Evaluando el porcentaje con pylint"'
                 sh 'python3 -m pylint --generate-rcfile > .pylintrc'
@@ -31,7 +46,7 @@ pipeline {
                     echo "Puntuación de pylint: ${pylintScore}%"
                     if (pylintScore < 70) {
                         echo "La puntuación de pylint es inferior al 70%. Enviando notificación al desarrollador."
-                        // Agrega el código para enviar la notificación al desarrollador aquí
+                        // Analizar método de notificación para que no falle ... falta el smtp para el mail.. hay que pensarlo. 
                         error('Pylint score es inferior al 70%')
                     }
                 }
@@ -39,27 +54,47 @@ pipeline {
         }
         
         stage('Ejecutar Docker Compose') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
                 sh 'docker compose up -d'
             }
         }
         
         stage('Ejecutar pruebas unitarias') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
-                sh 'python -m unittest testunitarios.test_srv_bus'
-                sh 'python -m unittest testunitarios.test_registro'
-                sh 'python -m unittest testunitarios.test_caja'
-                sh 'python -m unittest testunitarios.test_tienda'
+                sh 'python3 -m unittest testunitarios.test_srv_bus'
+                sh 'python3 -m unittest testunitarios.test_registro'
+                sh 'python3 -m unittest testunitarios.test_caja'
+                sh 'python3 -m unittest testunitarios.test_tienda'
             }
         }
         
         stage('Pruebas de integración') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
-                sh 'python -m unittest testunitarios.test_integracion'
+                sh 'python3 -m unittest testunitarios.test_integracion'
             }
         }
         
         stage('Limpieza') {
+               agent { 
+            node{
+              label "slave1"; 
+              }
+          }         
             steps {
                 sh 'docker compose down'
                 sh 'docker rmi -f $(docker images -q)'
@@ -67,7 +102,18 @@ pipeline {
         }
         
         stage('Despliegue') {
+               agent { 
+            node{
+              label "slave2"; 
+              }
+          }         
             steps {
+                 script {
+                    git credentialsId: 'github-token',
+                        url: 'https://github.com/richifor/ventabus.git',
+                        branch: 'main'
+                }
+                sh 'python3 -m pip install -r requirements.txt'
                 sh 'docker compose up -d'
             }
         }
