@@ -30,5 +30,5 @@ services:
     ports:
       - 8888:8888
     volumes:
-    - /bds/tienda/:/srv/instance
+    - ./bds/tienda/:/srv/instance
 
